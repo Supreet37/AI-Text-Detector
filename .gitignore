@@ -1,0 +1,17 @@
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+*.log
+*.pkl
+!sentence_model.pkl
+!vectorizer.pkl
+.env
+.venv/
+venv/

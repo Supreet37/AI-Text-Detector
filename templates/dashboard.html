@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Veritext — Analyzer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+</head>
+<body data-testid="dashboard-page">
+    <div class="dashboard">
+
+        <!-- Mobile topbar -->
+        <header class="mobile-topbar">
+            <a href="/" class="brand">
+                <span class="brand-mark"><i class="fa-solid fa-wave-square"></i></span>
+                <span class="brand-name">Veritext</span>
+            </a>
+            <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Open menu" data-testid="mobile-menu-btn">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </header>
+
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar" data-testid="dashboard-sidebar">
+            <div class="sidebar-inner">
+                <a href="/" class="logo-area">
+                    <div class="logo-icon"><i class="fa-solid fa-wave-square"></i></div>
+                    <div class="logo-text">
+                        <h2>Veritext</h2>
+                        <p>Text Analysis Tool</p>
+                    </div>
+                </a>
+
+                <div class="stats-cards">
+                    <div class="stat-card">
+                        <div class="stat-label"><i class="fa-solid fa-bullseye"></i> Accuracy Rate</div>
+                        <div class="stat-value">90.5%</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label"><i class="fa-solid fa-cubes"></i> Models Trained</div>
+                        <div class="stat-value">4</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label"><i class="fa-solid fa-chart-simple"></i> Total Analyses</div>
+                        <div class="stat-value" id="totalAnalyses" data-testid="total-analyses-value">0</div>
+                    </div>
+                </div>
+
+                <ul class="sidebar-menu">
+                    <li class="active"><a href="/dashboard"><i class="fa-solid fa-gauge-high"></i> Dashboard</a></li>
+                    <li><a href="#"><i class="fa-solid fa-file-lines"></i> My Analyses</a></li>
+                    <li><a href="#"><i class="fa-solid fa-sliders"></i> Settings</a></li>
+                    <li><a href="#"><i class="fa-solid fa-circle-question"></i> Help Center</a></li>
+                    <li><a href="/"><i class="fa-solid fa-arrow-left-long"></i> Back to landing</a></li>
+                </ul>
+            </div>
+        </aside>
+
+        <!-- Backdrop for mobile sidebar -->
+        <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+        <!-- Main -->
+        <main class="main-content">
+            <div class="top-header">
+                <div class="welcome">
+                    <h1>Welcome back</h1>
+                    <p>Analyze any text — sentence by sentence.</p>
+                </div>
+                <div class="user-profile">
+                    <div class="user-avatar">V</div>
+                </div>
+            </div>
+
+            <!-- Analysis Card -->
+            <section class="main-card" data-testid="analysis-card">
+                <div class="card-header">
+                    <h3><i class="fa-solid fa-magnifying-glass"></i> Analyze Text</h3>
+                    <p>Paste or type the content you want to analyze — minimum 10 characters.</p>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="/predict" id="analyzeForm" novalidate>
+                        <div class="textarea-wrap" id="textareaWrap">
+                            <textarea
+                                id="analyzeInput"
+                                name="text"
+                                rows="8"
+                                placeholder="Example:&#10;&#10;I really enjoyed this movie. The acting was fantastic and the story kept me engaged throughout. I would definitely recommend it to my friends."
+                                data-testid="analyze-textarea"
+                            ></textarea>
+                            <div class="counter">
+                                <span id="charCount" data-testid="char-count">0</span> characters
+                            </div>
+                        </div>
+
+                        <div class="error-msg" id="errorMsg" data-testid="error-msg">
+                            <i class="fa-solid fa-circle-exclamation"></i>
+                            <span id="errorText">Please enter at least 10 characters before analyzing.</span>
+                        </div>
+
+                        <div class="actions">
+                            <button type="submit" id="analyzeBtn" class="btn-primary" data-testid="analyze-btn">
+                                <i class="fa-solid fa-wand-magic-sparkles"></i>
+                                Analyze Content
+                            </button>
+                            <button type="button" id="clearBtn" class="btn-ghost" data-testid="clear-btn">
+                                <i class="fa-solid fa-eraser"></i>
+                                Clear
+                            </button>
+                        </div>
+                    </form>
+
+                    <div class="footer-note">
+                        <i class="fa-solid fa-shield-halved"></i> Sentence-level analysis &nbsp;·&nbsp; 90.5% accuracy &nbsp;·&nbsp; Real-time detection
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+</body>
+</html>"

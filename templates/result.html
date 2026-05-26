@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Analysis Result · Veritext</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/result.css') }}"
+    />
+  </head>
+  <body data-testid="result-page">
+    <div class="dashboard">
+      <!-- Mobile topbar -->
+      <header class="mobile-topbar">
+        <a href="/" class="brand">
+          <span class="brand-mark"
+            ><i class="fa-solid fa-wave-square"></i
+          ></span>
+          <span class="brand-name">Veritext</span>
+        </a>
+        <button
+          class="mobile-menu-btn"
+          id="mobileMenuBtn"
+          aria-label="Open menu"
+          data-testid="mobile-menu-btn"
+        >
+          <i class="fa-solid fa-bars"></i>
+        </button>
+      </header>
+
+      <aside class="sidebar" id="sidebar" data-testid="result-sidebar">
+        <div class="sidebar-inner">
+          <a href="/" class="logo-area">
+            <div class="logo-icon">
+              <i class="fa-solid fa-wave-square"></i>
+            </div>
+            <div class="logo-text">
+              <h2>Veritext</h2>
+              <p>Text Analysis Tool</p>
+            </div>
+          </a>
+
+          <div class="stats-cards">
+            <div class="stat-card">
+              <div class="stat-label">
+                <i class="fa-solid fa-bullseye"></i> Accuracy Rate
+              </div>
+              <div class="stat-value">90.5%</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">
+                <i class="fa-solid fa-cubes"></i> Models Trained
+              </div>
+              <div class="stat-value">4</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">
+                <i class="fa-solid fa-chart-simple"></i> Total Analyses
+              </div>
+              <div
+                class="stat-value"
+                id="totalAnalyses"
+                data-testid="total-analyses-value"
+              >
+                0
+              </div>
+            </div>
+          </div>
+
+          <ul class="sidebar-menu">
+            <li>
+              <a href="/dashboard"
+                ><i class="fa-solid fa-gauge-high"></i> Dashboard</a
+              >
+            </li>
+            <li>
+              <a href="#"
+                ><i class="fa-solid fa-file-lines"></i> My Analyses</a
+              >
+            </li>
+            <li>
+              <a href="#"><i class="fa-solid fa-sliders"></i> Settings</a>
+            </li>
+            <li>
+              <a href="/"
+                ><i class="fa-solid fa-arrow-left-long"></i> Back to landing</a
+              >
+            </li>
+          </ul>
+        </div>
+      </aside>
+
+      <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+      <main class="main-content">
+        <div class="top-header">
+          <div class="welcome">
+            <h1>Analysis Result</h1>
+            <p>Detailed breakdown of your submission.</p>
+          </div>
+          <div class="user-avatar">V</div>
+        </div>
+
+        {% if error %}
+        <div class="result-card">
+          <div class="error-box" data-testid="error-box">
+            <div class="error-icon">
+              <i class="fa-solid fa-triangle-exclamation"></i>
+            </div>
+            <h3>Something needs your attention</h3>
+            <p>{{ error }}</p>
+            <a href="/dashboard" class="back-btn" data-testid="error-back-btn">
+              <i class="fa-solid fa-arrow-left-long"></i> Try again
+            </a>
+          </div>
+        </div>
+        {% else %}
+
+        <div class="result-card">
+          <div
+            class="prediction-banner prediction-{{ result.prediction }}"
+            data-testid="prediction-banner"
+          >
+            <div class="prediction-icon">
+              {% if result.prediction == 'AI' %}
+              <i class="fa-solid fa-robot"></i>
+              {% elif result.prediction == 'Human' %}
+              <i class="fa-solid fa-user-pen"></i>
+              {% elif result.prediction == 'CODE' %}
+              <i class="fa-solid fa-code"></i>
+              {% else %}
+              <i class="fa-solid fa-circle-question"></i>
+              {% endif %}
+            </div>
+            <div class="prediction-text">{{ result.prediction }}</div>
+            <div class="prediction-conf">
+              Confidence
+              <strong>{{ result.confidence }}%</strong>
+            </div>
+          </div>
+
+          <div class="stats-grid">
+            <div class="stat-box">
+              <div class="value">{{ result.avg_ai_probability }}%</div>
+              <div class="label">AI Probability</div>
+            </div>
+            <div class="stat-box">
+              <div class="value">{{ result.ai_sentence_count }}</div>
+              <div class="label">AI Sentences</div>
+            </div>
+            <div class="stat-box">
+              <div class="value">{{ result.human_sentence_count }}</div>
+              <div class="label">Human Sentences</div>
+            </div>
+            <div class="stat-box">
+              <div class="value">
+                {{ result.analyzed_sentences }}/{{ result.total_sentences }}
+              </div>
+              <div class="label">Analyzed</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="result-card">
+          <div class="card-header">
+            <h3><i class="fa-solid fa-chart-column"></i> Text Features</h3>
+          </div>
+          <div class="features-grid">
+            <div class="feature-chip">
+              <div class="label">Words</div>
+              <div class="value">{{ features.word_count }}</div>
+            </div>
+            <div class="feature-chip">
+              <div class="label">Characters</div>
+              <div class="value">{{ features.char_count }}</div>
+            </div>
+            <div class="feature-chip">
+              <div class="label">Sentences</div>
+              <div class="value">{{ features.sentence_count }}</div>
+            </div>
+            <div class="feature-chip">
+              <div class="label">Avg Word Len</div>
+              <div class="value">{{ features.avg_word_length }}</div>
+            </div>
+            <div class="feature-chip">
+              <div class="label">Content Type</div>
+              <div class="value">{{ result.content_type }}</div>
+            </div>
+            <div class="feature-chip">
+              <div class="label">Type Confidence</div>
+              <div class="value">{{ result.content_type_confidence }}%</div>
+            </div>
+            <div class="feature-chip">
+              <div class="label">Language</div>
+              <div class="value">{{ features.language }}</div>
+            </div>
+            <div class="feature-chip">
+              <div class="label">Complexity</div>
+              <div class="value">{{ features.complexity_score }}/10</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="result-card">
+          <div class="card-header">
+            <h3><i class="fa-solid fa-list-check"></i> Sentence Analysis</h3>
+          </div>
+          <div class="sentences">
+            {% for sentence in result.sentence_results %}
+            <div class="sentence-item sentence-{{ sentence.prediction }}">
+              <div class="sentence-text">
+                "{{ sentence.sentence[:200] }}{% if sentence.sentence|length > 200
+                %}…{% endif %}"
+              </div>
+              <div class="sentence-meta">
+                <span class="badge badge-{{ sentence.prediction }}"
+                  >{{ sentence.prediction }}</span
+                >
+                <span>Conf: {{ sentence.confidence }}%</span>
+                <span>AI: {{ sentence.ai_probability }}%</span>
+                <span>Human: {{ sentence.human_probability }}%</span>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+
+        <div class="result-footer">
+          <a
+            href="/dashboard"
+            class="back-btn"
+            data-testid="result-back-btn"
+          >
+            <i class="fa-solid fa-arrow-left-long"></i> Analyze new text
+          </a>
+        </div>
+        {% endif %}
+      </main>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/result.js') }}"></script>
+    {% if not error %}
+    <script>
+      // Hand result data to result.js for history persistence
+      window.__RESULT__ = {
+        prediction: "{{ result.prediction }}",
+        confidence: "{{ result.confidence }}",
+        text: "{{ original_text|tojson|safe }}"
+      };
+    </script>
+    {% endif %}
+  </body>
+</html>"
