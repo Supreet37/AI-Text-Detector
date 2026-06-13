@@ -2,7 +2,6 @@
 
 [![Python 3.13+](https://img.shields.io/badge/Python-3.13+-blue.svg)](https://www.python.org/)
 [![scikit-learn](https://img.shields.io/badge/scikit--learn-1.8.0-orange)](https://scikit-learn.org/)
-[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
 > **A Production-Ready Machine Learning System to Detect AI-Generated Content with 87% Accuracy**
 
